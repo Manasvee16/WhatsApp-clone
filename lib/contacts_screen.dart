@@ -11,7 +11,7 @@ class ContactsScreen extends StatelessWidget {
     "assets/images/3.jpeg",
     "assets/images/4.jpeg",
     "assets/images/5.jpeg",
-    "assets/images/6.jpeg",
+    "assets/images/7.jpeg",
   ];
   final List names = [
     "person 1",
