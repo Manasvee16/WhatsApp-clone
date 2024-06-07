@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "974591293146",
+    "project_id": "whatsapp-new-design",
+    "storage_bucket": "whatsapp-new-design.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974591293146:android:3eed93cafaa08e0d8b97e3",
+        "android_client_info": {
+          "package_name": "com.example.whatsapp_new_design"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8Oi8kraxhkQOdlqnI7uz-hSmuZKL865I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
