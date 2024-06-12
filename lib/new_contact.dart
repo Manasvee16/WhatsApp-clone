@@ -11,8 +11,14 @@ class _ContactState extends State<NewContact> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final CollectionReference myItems =
-      FirebaseFirestore.instance.collection("users");
+  final CollectionReference myItems =FirebaseFirestore.instance.collection("users");
+  void addItems(String first_name, String last_name, String number) {
+    myItems.add({
+      'first name': first_name,
+      'last name': last_name,
+      'number': number,
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,13 +92,22 @@ class _ContactState extends State<NewContact> {
             ]),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                String first_name=firstNameController.text;
+                String last_name=lastNameController.text;
+                String number=phoneController.text;
+                addItems(first_name, last_name, number);
+                Navigator.pop(context);
+              },
               child: Container(
                   child: Text("Save"),
                   width: MediaQuery.of(context).size.width,
                   color: Color(0xFFD8FDD2)),
             )
-          ])
-        ]));
+          ]
+          )
+        ]
+        )
+        );
   }
 }
