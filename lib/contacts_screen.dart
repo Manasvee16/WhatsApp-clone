@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whatsapp_new_design/chats_screen.dart';
+import 'package:whatsapp_new_design/contacts_repository.dart';
 import 'package:whatsapp_new_design/new_contact.dart';
 import 'package:whatsapp_new_design/settings_screen.dart';
-
-class ContactsScreen extends StatelessWidget {
-  final List images = [
+import 'package:whatsapp_new_design/widget/user_model.dart';
+class ContactsScreen extends StatefulWidget {
+  ContactsScreen({super.key});
+  @override
+  State<ContactsScreen> createState() => _ContactsScreenState();
+}
+class _ContactsScreenState extends State<ContactsScreen> {
+    final List images = [
     "assets/images/1.jpeg",
     "assets/images/2.jpeg",
     "assets/images/3.jpeg",
@@ -22,6 +28,7 @@ class ContactsScreen extends StatelessWidget {
     "person 6",
   ];
   final List msgs = [
+
     "hello",
     "hello",
     "hello",
@@ -29,8 +36,21 @@ class ContactsScreen extends StatelessWidget {
     "hello",
     "hello",
   ];
+  List<List<UserModel>>contacts=[];
+    @override
+  void initState() {
+    super.initState(); 
+    final CollectionReference myContacts = FirebaseFirestore.instance.collection("contacts");
   final CollectionReference myItems =
       FirebaseFirestore.instance.collection("users");
+    ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
+    getContacts();
+    print("contacts");
+  }
+void getContacts()async{
+contacts=await ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
+print("contacts fetched ${contacts}");
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,13 +86,29 @@ class ContactsScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(height: 3),
-                        Text(
-                          "627 contacts",
-                          style: TextStyle(fontSize: 15, color: Colors.black54),
-                        ),
+                        //ref.watch(contactsControllerProvider).when(
+              // data: (allContacts) {
+              //   return Text(
+              //     "${allContacts[0].length} contact${allContacts[0].length == 1 ? '' : 's'}",
+              //     style: const TextStyle(fontSize: 12),
+              //   );
+              // },
+              // error: (e, t) {
+              //   return const SizedBox();
+              // },
+              // loading: () {
+              //   return const Text(
+              //     'counting...',
+              //     style: TextStyle(fontSize: 12),
+              //   );
+              // },
                       ],
+                        // Text(
+                        //   "627 contacts",
+                        //   style: TextStyle(fontSize: 15, color: Colors.black54),
+                        // ),
                     ),
-                  ),
+                    ),
                 ],
               ),
             ),
@@ -135,12 +171,25 @@ class ContactsScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: StreamBuilder(
-            stream: myItems.snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.hasData) {
-                final List<DocumentSnapshot> items = streamSnapshot.data!.docs.toList();
-                return Column(children: [
+        body: //ref.watch(contactsControllerProvider).when(
+        // data: (allContacts) {
+        //   return ListView.builder(
+        //     itemCount: allContacts[0].length + allContacts[1].length,
+        //     itemBuilder: (context, index) {
+        //       late UserModel firebaseContacts;
+        //       late UserModel phoneContacts;
+
+        //       if (index < allContacts[0].length) {
+        //         firebaseContacts = allContacts[0][index];
+        //       } else {
+        //         phoneContacts = allContacts[1][index - allContacts[0].length];
+        //       }
+        //       return index < allContacts[0].length
+        //           ? Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: [
+        //                 if (index == 0)
+        Column(children: [
                   SizedBox(
                       //height: 500,
                       child: Column(children: [
@@ -209,7 +258,8 @@ class ContactsScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) => NewContact(),
                                     ),
-                                  );},
+                                  );
+                                  },
                                 child: Text(
                                   "New contact",
                                   style: TextStyle(fontSize: 20),
@@ -251,6 +301,7 @@ class ContactsScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                        
                       ],
                     ),
                     // Divider between New group/New contact and Contact List
@@ -260,6 +311,19 @@ class ContactsScreen extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       child: Row(
                         children: [
+                          Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                //child: Text(
+                                 // 'Contacts on WhatsApp',
+                                 // style: TextStyle(
+                                  //  fontWeight: FontWeight.w600,
+                                 //   color: Colors.grey,
+                               //   ),
+                              //  ),
+                              ),
                           CircleAvatar(
                             maxRadius: 25,
                             backgroundImage: AssetImage(
@@ -292,11 +356,9 @@ class ContactsScreen extends StatelessWidget {
                       //itemCount: images.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: streamSnapshot.data!.docs.length,
+                      itemCount:contacts.length,
                       itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              streamSnapshot.data!.docs[index];
-
+                          final List<UserModel>Contacts =contacts[index];
                              // return Text('hello');
                           return Padding(
                               padding: EdgeInsets.symmetric(vertical: 5),
@@ -306,10 +368,26 @@ class ContactsScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ChatsScreen(),
+                                      //arguments: firebaseContacts,  
                                     ),
                                   );
                                 },
+                                //contactSource: firebaseContacts,
                                 child: Row(children: [
+                                 // if (index == allContacts[0].length)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                            child: Text(
+                              'Invite to WhatsApp',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                                   CircleAvatar(
                                     maxRadius: 28,
                                     backgroundImage: AssetImage(
@@ -333,13 +411,13 @@ class ContactsScreen extends StatelessWidget {
                                           ),
                                         ),
                                         ListTile(
-                                    title: Text(documentSnapshot['first_name'],
+                                    title: Text(names[index],
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                         )),
                                     subtitle: Text(
-                                      documentSnapshot['number'],
+                                      msgs[index],
                                     ))
                                       ],
                                     
@@ -355,10 +433,9 @@ class ContactsScreen extends StatelessWidget {
                               //     padding: const EdgeInsets.all(8.0),
                         
         );
-          })]);
-              }
-
-            return SizedBox();
-            }));
+          }
+          )
+          ]
+    ));
   }
 }
