@@ -96,8 +96,10 @@ class _ContactState extends State<NewContact> {
                 String firstName=firstNameController.text;
                 String lastName=lastNameController.text;
                 String number=phoneController.text;
+                CircularProgressIndicator();
                 addItems(firstName, lastName, number);
                 Navigator.pop(context);
+                AlertDialog();
               },
               child: Container(
                   child: Text("Save"),

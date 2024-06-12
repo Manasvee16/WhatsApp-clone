@@ -5,6 +5,9 @@ import 'package:whatsapp_new_design/widget/user_model.dart';
 class ContactsRepository {
   final FirebaseFirestore firestore;
   ContactsRepository({required this.firestore});
+  // Future<void> addContact(Contact contact) async {
+  //   await FirebaseFirestore.instance.collection('contacts').add(contact.toMap());
+  // }
   Future<List<List<UserModel>>> getAllContacts() async {
     List<UserModel> firebaseContacts = [];
     List<UserModel> phoneContacts = [];

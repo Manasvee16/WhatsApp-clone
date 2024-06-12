@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, unused_local_variable
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,17 +15,30 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
 
   ContactBloc(this.contactRepository) : super(InitialContactState()) {
     on<AddContact>((event, emit) async {
-      emit(LoadingContactState());
       try {
-        await contactRepository.addContact(event.contact);
+        emit(LoadingContactState());
+        final contact=await contactRepository.addContact(event.contact);
         emit(SuccessContactState());
-         final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
+        final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
         myItems.add(myItems).then((DocumentReference doc) =>
     print('DocumentSnapshot added with ID: ${doc.id}'));
       } catch (error) {
         emit(FailureContactState(error.toString()));
       }
     });
+    @override
+Stream<ContactState> mapEventToState(ContactEvent event) async* {
+  if (event is AddContact) {
+    yield LoadingContactState();
+    try {
+      await contactRepository.addContact(event.contact);
+      yield SuccessContactState();
+    } catch (error) {
+      yield FailureContactState(error.toString());
+    }
+  }
+  // Handle other events (if any)
+}
   }
 }
 

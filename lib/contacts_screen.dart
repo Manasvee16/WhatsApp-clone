@@ -46,13 +46,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
     //final CollectionReference myContacts = FirebaseFirestore.instance.collection("contacts");
     final CollectionReference myItems =
         FirebaseFirestore.instance.collection("contacts");
-    Future<void> create() async {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog();
-          });
-    }
     //ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
     //getContacts();
     //print("contacts");
@@ -61,38 +54,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
 // void getContacts()async{
 // contacts=await ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
 // print("contacts fetched ${contacts}");
-// }
-  @override
-  Widget _buildForm(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          ContactBloc(ContactRepository()), // Create ContactBloc
-      child: BlocBuilder<ContactBloc, ContactState>(
-        builder: (context, state) {
-          if (state is LoadingContactState) {
-            return CircularProgressIndicator();
-          } else if (state is SuccessContactState) {
-            // Show success message or navigate to contact list
-            return Text('Contact added successfully!');
-          } else if (state is FailureContactState) {
-            return Text('Error: ${state.error}');
-          } else {
-            return build(context); // Your contact form builder
-          }
-        },
-      ),
-    );
-  }
-
+//
+//flow:
   @override
   Widget build(BuildContext context) {
     final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ContactBloc>(
+    return BlocProvider(
             create: (context) =>
-                ContactBloc(ContactRepository()))
-      ],
+          ContactBloc(ContactRepository()),
       child: Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
@@ -349,7 +318,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     //height: 500,
                     width: MediaQuery.of(context).size.width,
                   ))
-            ])),
+            ])
+            ),
             StreamBuilder(
                 stream: myItems.snapshots(),
                 builder:
@@ -387,8 +357,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                })
-          ])),
-    );
+                }
+                )]
+  )
+  ));
   }
 }
