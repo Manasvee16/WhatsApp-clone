@@ -10,7 +10,7 @@ class ContactsRepository {
     List<UserModel> phoneContacts = [];
     try {
       if (await FlutterContacts.requestPermission()) {
-        final userCollection = await firestore.collection('users').get();
+        final userCollection = await firestore.collection('contacts').get();
         final allContactsInThePhone = await FlutterContacts.getContacts(
           withProperties: true,
         );

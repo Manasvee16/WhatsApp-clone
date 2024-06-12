@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, unused_local_variable, override_on_non_overriding_member
+// ignore_for_file: unused_element, unused_local_variable, override_on_non_overriding_member, unused_label
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,13 +44,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
   void initState() {
     super.initState();
     //final CollectionReference myContacts = FirebaseFirestore.instance.collection("contacts");
-    final CollectionReference myItems =FirebaseFirestore.instance.collection("users");
+    final CollectionReference myItems =
+        FirebaseFirestore.instance.collection("contacts");
     Future<void> create() async {
       return showDialog(
-        context: context, 
-        builder: (BuildContext context) {
-          return Dialog();
-        });
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog();
+          });
     }
     //ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
     //getContacts();
@@ -61,10 +62,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
 // contacts=await ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
 // print("contacts fetched ${contacts}");
 // }
-@override
+  @override
   Widget _buildForm(BuildContext context) {
     return BlocProvider(
-      create: (context) => ContactBloc(ContactRepository()), // Create ContactBloc
+      create: (context) =>
+          ContactBloc(ContactRepository()), // Create ContactBloc
       child: BlocBuilder<ContactBloc, ContactState>(
         builder: (context, state) {
           if (state is LoadingContactState) {
@@ -81,329 +83,312 @@ class _ContactsScreenState extends State<ContactsScreen> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<ContactBloc>(context);
-    final CollectionReference myItems =FirebaseFirestore.instance.collection("users");
-    return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65),
-          child: AppBar(
-            elevation: 0,
-            leading: Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 30,
+    final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ContactBloc>(
+            create: (context) =>
+                ContactBloc(ContactRepository()))
+      ],
+      child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(65),
+            child: AppBar(
+              elevation: 0,
+              leading: Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: 30,
+                  ),
                 ),
               ),
+              leadingWidth: 10,
+              title: Padding(
+                padding: EdgeInsets.only(top: 6),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Select contact",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(height: 3),
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10, right: 20),
+                  child: Icon(
+                    Icons.search,
+                    size: 28,
+                  ),
+                ),
+                PopupMenuButton(
+                  onSelected: (selected) {
+                    if (selected == 8) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  elevation: 10,
+                  iconSize: 28,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text(
+                        "Invite a friend",
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 2,
+                      child: Text(
+                        "Contacts",
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 3,
+                      child: Text(
+                        "Refresh",
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 4,
+                      child: Text(
+                        "Help",
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            leadingWidth: 10,
-            title: Padding(
-              padding: EdgeInsets.only(top: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          body: Column(children: [
+            SizedBox(
+                //height: 500,
+                child: Column(children: [
+              Row(
                 children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1DA75E),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                      Icons.group_add,
+                      size: 15,
+                      color: Colors.white,
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: SizedBox(
+                      height: 30,
+                      //width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "New group",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          SizedBox(height: 3),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1DA75E),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                      Icons.person_add,
+                      size: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "Select contact",
-                          style: TextStyle(fontSize: 20),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewContact(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "New contact",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                         SizedBox(height: 3),
-                        //ref.watch(contactsControllerProvider).when(
-                        // data: (allContacts) {
-                        //   return Text(
-                        //     "${allContacts[0].length} contact${allContacts[0].length == 1 ? '' : 's'}",
-                        //     style: const TextStyle(fontSize: 12),
-                        //   );
-                        // },
-                        // error: (e, t) {
-                        //   return const SizedBox();
-                        // },
-                        // loading: () {
-                        //   return const Text(
-                        //     'counting...',
-                        //     style: TextStyle(fontSize: 12),
-                        //   );
-                        // },
                       ],
-                      // Text(
-                      //   "627 contacts",
-                      //   style: TextStyle(fontSize: 15, color: Colors.black54),
-                      // ),
                     ),
                   ),
                 ],
               ),
-            ),
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(top: 10, right: 20),
-                child: Icon(
-                  Icons.search,
-                  size: 28,
-                ),
-              ),
-              PopupMenuButton(
-                onSelected: (selected) {
-                  if (selected == 8) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingsScreen(),
-                      ),
-                    );
-                  }
-                },
-                elevation: 10,
-                iconSize: 28,
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Text(
-                      "Invite a friend",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 2,
-                    child: Text(
-                      "Contacts",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 3,
-                    child: Text(
-                      "Refresh",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 4,
-                    child: Text(
-                      "Help",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        body: 
-        Column(children: [
-          SizedBox(
-              //height: 500,
-              child: Column(children: [
-            Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF1DA75E),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(
-                    Icons.group_add,
-                    size: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: SizedBox(
+              Row(
+                children: [
+                  Container(
                     height: 30,
-                    //width: MediaQuery.of(context).size.width,
+                    width: 30,
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1DA75E),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                      Icons.groups_outlined,
+                      size: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "New group",
+                          "New community",
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(height: 3),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF1DA75E),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(
-                    Icons.person_add,
-                    size: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NewContact(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "New contact",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      SizedBox(height: 3),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF1DA75E),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(
-                    Icons.groups_outlined,
-                    size: 15,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "New community",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(height: 3),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            // Divider between New group/New contact and Contact List
-            //Divider(thickness: 1),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    //child: Text(
-                    // 'Contacts on WhatsApp',
-                    // style: TextStyle(
-                    //  fontWeight: FontWeight.w600,
-                    //   color: Colors.grey,
-                    //   ),
-                    //  ),
-                  ),
-                  CircleAvatar(
-                    maxRadius: 25,
-                    backgroundImage: AssetImage(
-                      "assets/images/1.jpeg", // Replace with the path to your profile picture
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "+91 95211 98431 (You)",
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                    ],
-                  ),
                 ],
               ),
-            ),
-//Divider(thickness: 1),
-            Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: SizedBox(
-                  //height: 500,
-                  width: MediaQuery.of(context).size.width,
-                ))
-          ])),
-          StreamBuilder(
-            stream: myItems.snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot){
-        if (streamSnapshot.hasData) {
-          return ListView.builder(
-              //itemCount: images.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot=streamSnapshot.data!.docs[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Material(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                                      title: Text(documentSnapshot['first name'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          )
-                                          ),
-                                      subtitle: Text(
-                                        documentSnapshot['number'],
-                            ),
-                          ),
-                    )
+              // Divider between New group/New contact and Contact List
+              //Divider(thickness: 1),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
                       ),
+                      //child: Text(
+                      // 'Contacts on WhatsApp',
+                      // style: TextStyle(
+                      //  fontWeight: FontWeight.w600,
+                      //   color: Colors.grey,
+                      //   ),
+                      //  ),
+                    ),
+                    CircleAvatar(
+                      maxRadius: 25,
+                      backgroundImage: AssetImage(
+                        "assets/images/1.jpeg", // Replace with the path to your profile picture
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "+91 95211 98431 (You)",
+                          style: TextStyle(fontSize: 16, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+//Divider(thickness: 1),
+              Padding(
+                  padding: EdgeInsets.only(top: 6),
+                  child: SizedBox(
+                    //height: 500,
+                    width: MediaQuery.of(context).size.width,
+                  ))
+            ])),
+            StreamBuilder(
+                stream: myItems.snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (streamSnapshot.hasData) {
+                    return ListView.builder(
+                      //itemCount: images.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: streamSnapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        
+                        final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Text(documentSnapshot['firstName'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  )),
+                              subtitle: Text(
+                                documentSnapshot['number'],
+                              ),
+                            ),
+                          )),
+                        );
+                      },
                     );
-                  },
-                );
-            };
-            return const Center(
-              child: CircularProgressIndicator(),
-              );
-            }
-          )
-        ]
-        )
+                  };
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                })
+          ])),
     );
   }
 }

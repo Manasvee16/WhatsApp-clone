@@ -11,11 +11,11 @@ class _ContactState extends State<NewContact> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final CollectionReference myItems =FirebaseFirestore.instance.collection("users");
-  void addItems(String first_name, String last_name, String number) {
+  final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
+  void addItems(String firstName, String lastName, String number) {
     myItems.add({
-      'first name': first_name,
-      'last name': last_name,
+      'firstName': firstName,
+      'lastName': lastName,
       'number': number,
     });
   }
@@ -93,10 +93,10 @@ class _ContactState extends State<NewContact> {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                String first_name=firstNameController.text;
-                String last_name=lastNameController.text;
+                String firstName=firstNameController.text;
+                String lastName=lastNameController.text;
                 String number=phoneController.text;
-                addItems(first_name, last_name, number);
+                addItems(firstName, lastName, number);
                 Navigator.pop(context);
               },
               child: Container(
