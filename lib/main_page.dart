@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_new_design/calls_screen.dart';
-import 'package:whatsapp_new_design/communities_screen.dart';
-import 'package:whatsapp_new_design/home_screen.dart';
-import 'package:whatsapp_new_design/updates_screen.dart';
+import 'package:whatsapp_new_design/features/calls_screen.dart';
+import 'package:whatsapp_new_design/features/communities_screen.dart';
+import 'package:whatsapp_new_design/features/home_screen.dart';
+import 'package:whatsapp_new_design/features/updates_screen.dart';
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
   @override

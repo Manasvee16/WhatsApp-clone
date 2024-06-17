@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_new_design/settings_screen.dart';
+import 'package:whatsapp_new_design/features/settings_screen.dart';
 import 'package:whatsapp_new_design/widgets/chat_sample.dart';
 class ChatsScreen extends StatelessWidget {
   const ChatsScreen({super.key});

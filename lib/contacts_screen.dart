@@ -1,11 +1,12 @@
 // ignore_for_file: unused_element, unused_local_variable, override_on_non_overriding_member, unused_label
 
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_new_design/contact_bloc.dart';
+import 'package:whatsapp_new_design/contacts_repository.dart';
+import 'package:whatsapp_new_design/features/settings_screen.dart';
 import 'package:whatsapp_new_design/new_contact.dart';
-import 'package:whatsapp_new_design/settings_screen.dart';
 import 'package:whatsapp_new_design/widget/user_model.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -15,40 +16,12 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  // final List images = [
-  //   "assets/images/1.jpeg",
-  //   "assets/images/2.jpeg",
-  //   "assets/images/3.jpeg",
-  //   "assets/images/4.jpeg",
-  //   "assets/images/5.jpeg",
-  //   "assets/images/6.jpeg",
-  // ];
-  // final List names = [
-  //   "person 1",
-  //   "person 2",
-  //   "person 3",
-  //   "person 4",
-  //   "person 5",
-  //   "person 6",
-  // ];
-  // final List msgs = [
-  //   "hello",
-  //   "hello",
-  //   "hello",
-  //   "hello",
-  //   "hello",
-  //   "hello",
-  // ];
   List<List<UserModel>> contacts = [];
+ final ContactBloc contactBloc=ContactBloc(ContactsRepository(firestore: FirebaseFirestore.instance));
   @override
   void initState() {
+    contactBloc.add(ContactInitialEvent());
     super.initState();
-    //final CollectionReference myContacts = FirebaseFirestore.instance.collection("contacts");
-    final CollectionReference myItems =
-        FirebaseFirestore.instance.collection("contacts");
-    //ContactsRepository(firestore: FirebaseFirestore.instance).getAllContacts();
-    //getContacts();
-    //print("contacts");
   }
 
 // void getContacts()async{
@@ -56,15 +29,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
 // print("contacts fetched ${contacts}");
 //
 //flow:
-  @override
+@override
   Widget build(BuildContext context) {
-    final CollectionReference myItems =FirebaseFirestore.instance.collection("contacts");
-    return BlocProvider(
-            create: (context) =>
-          ContactBloc(ContactRepository()),
-      child: Scaffold(
+return BlocProvider(
+  create: (context) => contactBloc,
+  child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(65),
+          preferredSize: Size.fromHeight(65),
             child: AppBar(
               elevation: 0,
               leading: Padding(
@@ -159,207 +130,250 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ],
             ),
           ),
-          body: Column(children: [
-            SizedBox(
-                //height: 500,
-                child: Column(children: [
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1DA75E),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Icon(
-                      Icons.group_add,
-                      size: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: SizedBox(
-                      height: 30,
-                      //width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "New group",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(height: 3),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1DA75E),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Icon(
-                      Icons.person_add,
-                      size: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewContact(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "New contact",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        SizedBox(height: 3),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1DA75E),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Icon(
-                      Icons.groups_outlined,
-                      size: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "New community",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(height: 3),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              // Divider between New group/New contact and Contact List
-              //Divider(thickness: 1),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      //child: Text(
-                      // 'Contacts on WhatsApp',
-                      // style: TextStyle(
-                      //  fontWeight: FontWeight.w600,
-                      //   color: Colors.grey,
-                      //   ),
-                      //  ),
-                    ),
-                    CircleAvatar(
-                      maxRadius: 25,
-                      backgroundImage: AssetImage(
-                        "assets/images/1.jpeg", // Replace with the path to your profile picture
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "+91 95211 98431 (You)",
-                          style: TextStyle(fontSize: 16, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-//Divider(thickness: 1),
-              Padding(
-                  padding: EdgeInsets.only(top: 6),
-                  child: SizedBox(
+          body:  SizedBox(
+            width: 3000,
+            height: 18000,
+            child: SingleChildScrollView(
+            //       shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+            //                       itemCount: state.contacts.length,
+            //                       itemBuilder: (context, index) {
+            //                         //final contact=contactRepository.saveNewContact(event.contact);
+            //                         final contact = state.contacts[index];
+            //                         return ListTile(
+            //                           title: Text(contact["displayName"]),
+            //                           subtitle: Text(contact["phones"][0]["number"]),
+            //                         );
+            //                       },
+            //   child: 
+              child: Column(children: [
+                SizedBox(
                     //height: 500,
-                    width: MediaQuery.of(context).size.width,
-                  ))
-            ])
-            ),
-            StreamBuilder(
-                stream: myItems.snapshots(),
-                builder:
-                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                  if (streamSnapshot.hasData) {
-                    return ListView.builder(
-                      //itemCount: images.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: streamSnapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        
-                        final DocumentSnapshot documentSnapshot =
-                            streamSnapshot.data!.docs[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                              child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              title: Text(documentSnapshot['firstName'],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  )),
-                              subtitle: Text(
-                                documentSnapshot['number'],
+                    child: Column(children: [
+                  Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1DA75E),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.group_add,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: SizedBox(
+                          height: 30,
+                          //width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "New group",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              SizedBox(height: 3),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1DA75E),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.person_add,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NewContact(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "New contact",
+                                style: TextStyle(fontSize: 20),
                               ),
                             ),
-                          )),
-                        );
-                      },
-                    );
-                  };
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                )]
-  )
-  ));
-  }
+                            SizedBox(height: 3),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1DA75E),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.groups_outlined,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "New community",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(height: 3),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Divider between New group/New contact and Contact List
+                  //Divider(thickness: 1),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          //child: Text(
+                          // 'Contacts on WhatsApp',
+                          // style: TextStyle(
+                          //  fontWeight: FontWeight.w600,
+                          //   color: Colors.grey,
+                          //   ),
+                          //  ),
+                        ),
+                        // CircleAvatar(
+                        //   maxRadius: 25,
+                        //   backgroundImage: AssetImage(
+                        //     "assets/images/1.jpeg", // Replace with the path to your profile picture
+                        //   ),
+                        // ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "+91 95211 98431 (You)",
+                              style: TextStyle(fontSize: 16, color: Colors.black54),
+                            ),
+                            BlocConsumer<ContactBloc, ContactState>(
+                    bloc: contactBloc,
+                    //builder: (context, state) {
+                      // return BlocConsumer<ContactBloc, ContactState>(
+                      //   bloc: contactBloc,
+              // listenWhen: (previous, current) => current is ContactActionState,
+              // buildWhen: (previous, current) => current is !ContactActionState,
+                  builder: (context, state) {
+                        if (state is LoadingContactState) {
+                      //print('loading');
+                      return Center(
+                      child: CircularProgressIndicator(),);
+                    } else if (state is SuccessContactState) {
+                      // Show success message or navigate to contact list
+                      //print('Contact added successfully');
+                      return  SizedBox(
+                          width: 200,
+                          height: 700,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: AlwaysScrollableScrollPhysics(),
+                                    itemCount: state.contacts.length,
+                                    itemBuilder: (context, index) {
+                                      //final contact=contactRepository.saveNewContact(event.contact);
+                                      final contact = state.contacts[index];
+                                      return ListTile(
+                                        title: Text(contact["displayName"]),
+                                        subtitle: Text(contact["phones"][0]["number"]),
+                                      );
+                                    },
+                                  ),
+                          );
+                    } else if (state is FailureContactState) {
+                      //print('error');
+                      return Scaffold(
+                        body: Center(
+                        child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewContact(),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Failed to add contact",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                      )
+                      );
+                    }
+                    else{
+                      return Container();
+                    }
+                    },
+                    listener: (context, state) {
+                    if (state is NewContactNavigateToScreenActionState) {
+                      Navigator.pop(context);
+                    }
+                    else if (state is ContactSavedActionState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Contact Saved')));
+                }})],
+                        ),
+                      ],
+                    ),
+                  ),
+              //Divider(thickness: 1),
+                  Padding(
+                      padding: EdgeInsets.only(top: 6),
+                      child: SizedBox(
+                        //height: 500,
+                        width: MediaQuery.of(context).size.width,
+                      )
+                      )
+              ])
+                      )
+                      ]),
+            ),
+          )));
+                  }
 }

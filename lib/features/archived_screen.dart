@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_new_design/chats_screen.dart';
-import 'package:whatsapp_new_design/settings_screen.dart';
+import 'package:whatsapp_new_design/features/chats_screen.dart';
+import 'package:whatsapp_new_design/features/settings_screen.dart';
 class ArchivedScreen extends StatelessWidget {
   final List images=[
     "assets/images/1.jpeg",

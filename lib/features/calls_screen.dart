@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_new_design/settings_screen.dart';
+import 'package:whatsapp_new_design/features/settings_screen.dart';
 class CallsScreen extends StatelessWidget {
   const CallsScreen({super.key});
   @override
