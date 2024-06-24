@@ -4,6 +4,7 @@ import 'package:whatsapp_new_design/features/archived_screen.dart';
 import 'package:whatsapp_new_design/features/chats_screen.dart';
 import 'package:whatsapp_new_design/contacts_screen.dart';
 import 'package:whatsapp_new_design/features/settings_screen.dart';
+import 'package:whatsapp_new_design/news_api/news_screen.dart';
 class HomeScreen extends StatelessWidget {
   final List images=[
     "assets/images/1.jpeg",
@@ -76,6 +77,13 @@ class HomeScreen extends StatelessWidget {
                             builder: (context)=>SettingsScreen(),
                         ));
                       }
+                      else if (selected==1) {
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context)=>NewsScreen(),
+                        ));
+                      }
                     },
                     elevation:10,
                     iconSize: 28,
@@ -83,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                       PopupMenuItem(
                         value: 1,
                         child: Text(
-                          "New Group", 
+                          "News", 
                         style: TextStyle(
                           fontSize: 17, fontWeight: FontWeight.w500,
                           ),

@@ -91,48 +91,6 @@ return MultiBlocProvider(
             body: Center(
             child: CircularProgressIndicator(),));
           } 
-          // else if (state is SuccessContactState) {
-          //   // Show success message or navigate to contact list
-          //   //print('Contact added successfully');
-          //   return Scaffold(
-          //     body: Expanded(
-          //       child: ListView.builder(
-          //               itemCount: state.contacts.length,
-          //               itemBuilder: (context, index) {
-          //                 //final contact=contactRepository.saveNewContact(event.contact);
-          //                 final contact = state.contacts[index];
-          //                 return ListTile(
-          //                   title: Text(contact["displayName"]),
-          //                   subtitle: Text(contact["phones"][0]["number"]),
-          //                 );
-          //               },
-          //             ),
-          //     )
-    //            Center(
-    //   child: final snackBar = SnackBar(
-    //         content: const Text('Contact added'),
-    //       );
-    //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    //     },
-    //   ),
-    // );
-              // Center(child:
-              // TextButton(
-              //               onPressed: () {
-              //                 Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) => ContactsScreen(),
-              //                   ),
-              //                 );
-              //               },
-              //               child: Text(
-              //                 "Contact added successfully",
-              //                 style: TextStyle(fontSize: 20),
-              //               ),
-              //             ),)
-            //);
-          //} 
           else if (state is FailureContactState) {
             //print('error');
             return Scaffold(
@@ -251,8 +209,6 @@ return MultiBlocProvider(
               )
             ])]));
           }
-
-            
           }
           ),
 );

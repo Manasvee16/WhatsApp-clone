@@ -136,16 +136,6 @@ return BlocProvider(
             child: SingleChildScrollView(
             //       shrinkWrap: true,
                     physics: AlwaysScrollableScrollPhysics(),
-            //                       itemCount: state.contacts.length,
-            //                       itemBuilder: (context, index) {
-            //                         //final contact=contactRepository.saveNewContact(event.contact);
-            //                         final contact = state.contacts[index];
-            //                         return ListTile(
-            //                           title: Text(contact["displayName"]),
-            //                           subtitle: Text(contact["phones"][0]["number"]),
-            //                         );
-            //                       },
-            //   child: 
               child: Column(children: [
                 SizedBox(
                     //height: 500,
