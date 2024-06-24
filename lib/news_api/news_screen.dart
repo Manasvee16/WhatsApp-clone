@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_new_design/news_api/new_news_screen.dart';
 import 'package:whatsapp_new_design/news_api/news_bloc.dart';
 import 'package:whatsapp_new_design/news_api/news_detailed_screen.dart';
- // Import the NewsDetailScreen
+import 'package:whatsapp_new_design/news_api/update_news_screen.dart';
+
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -64,18 +66,6 @@ class _NewsScreenState extends State<NewsScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) => NewNews(),
-              ),
-            );
-          //newsBloc.add(NewsAddEvent());
-        },
-      ),
       body: BlocConsumer<NewsBloc, NewsState>(
         bloc: newsBloc,
         listenWhen: (previous, current) => current is NewsActionState,
@@ -92,29 +82,48 @@ class _NewsScreenState extends State<NewsScreen> {
               return ListView.builder(
                 itemCount: successState.news.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NewsDetailScreen(
-                            //serialNumber: index + 1,
-                            title: successState.news[index].title,
-                            body: successState.news[index].body, 
-                            id: index+1,
-                          ),
-                        ),
-                      );
+                  return Dismissible(
+                    key: Key(successState.news[index].id.toString()),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onDismissed: (direction) {
+                      newsBloc.add(NewsDeleteEvent(userId: successState.news[index].userId.toString()));
+                  final snackBar = SnackBar(
+            content: const Text('News deleted'),
+          );
                     },
-                    child: Container(
-                      color: Colors.grey.shade200,
-                      padding: const EdgeInsets.all(8),
-                      margin: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${index + 1}. ${successState.news[index].title}'),
-                        ],
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsDetailScreen(
+                              //serialNumber: index + 1,
+                              title: successState.news[index].title,
+                              body: successState.news[index].body, 
+                              id: index+1,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.grey.shade200,
+                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${index + 1}. ${successState.news[index].title}'),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -124,6 +133,43 @@ class _NewsScreenState extends State<NewsScreen> {
               return const SizedBox();
           }
         },
+      ),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 80,
+            right: 16,
+            child: FloatingActionButton(
+              heroTag: 'addNews',
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewNews(),
+                  ),
+                );
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
+              heroTag: 'updateNews',
+              child: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateNews(),
+                  ),
+                );
+                //newsBloc.add(NewsInitialFetchEvent());
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

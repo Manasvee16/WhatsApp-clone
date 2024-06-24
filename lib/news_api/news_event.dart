@@ -16,3 +16,21 @@ class NewsAddEvent extends NewsEvent{
     required this.userId,
 });
 }
+class NewsUpdateEvent extends NewsEvent{
+  String title;
+  String body;
+  String userId;
+  String id;
+  NewsUpdateEvent({
+    required this.title,
+    required this.body,
+    required this.userId,
+    required this.id,
+});
+}
+class NewsDeleteEvent extends NewsEvent{
+  String userId;
+  NewsDeleteEvent({
+    required this.userId,
+  });
+}

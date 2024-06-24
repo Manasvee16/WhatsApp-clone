@@ -22,3 +22,9 @@ class FailureNewsState extends NewsState {
 class LoadingNewsState extends NewsState {}
 class NewsSavedActionState extends NewsActionState{}
 class NewNewsNavigateToScreenActionState extends NewsActionState{}
+class UpdateNewsNavigateToScreenActionState extends NewsActionState{}
+class NewsUpdatedActionState extends NewsActionState{}
+class NewsDeletionSuccessState extends NewsActionState {}
+class NewsDeletionErrorState extends NewsActionState {}
+class NewsUpdationSuccessState extends NewsActionState {}
+class NewsUpdationErrorState extends NewsActionState {}

@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_new_design/news_api/news_bloc.dart';
 import 'package:whatsapp_new_design/news_api/news_data_ui_model.dart';
 
-class NewNews extends StatefulWidget {
-  const NewNews({super.key});
+class UpdateNews extends StatefulWidget {
+  const UpdateNews({super.key});
   @override
-  State<NewNews> createState() => _NewsState();
+  State<UpdateNews> createState() => _NewsState();
 }
-class _NewsState extends State<NewNews> {
+class _NewsState extends State<UpdateNews> {
   final NewsBloc newsBloc=NewsBloc();
   @override
   void initState() {
@@ -21,6 +21,7 @@ class _NewsState extends State<NewNews> {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
+  final TextEditingController idController = TextEditingController();
   final TextEditingController userIdController = TextEditingController();
 
   @override
@@ -32,12 +33,12 @@ return MultiBlocProvider(
   child: BlocConsumer<NewsBloc, NewsState>(
     bloc: newsBloc,
         listener: (context, state) {
-          if (state is NewNewsNavigateToScreenActionState) {
+          if (state is UpdateNewsNavigateToScreenActionState) {
             Navigator.pop(context);
           }
-          else if (state is NewsSavedActionState) {
+          else if (state is NewsUpdatedActionState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('News Saved')),
+              SnackBar(content: Text('News Updated')),
             );
           }
         },
@@ -57,7 +58,7 @@ return MultiBlocProvider(
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => NewNews(),
+                                  builder: (context) => UpdateNews(),
                                 ),
                               );
                             },
@@ -87,7 +88,7 @@ return MultiBlocProvider(
                   ),
                 ),
                 backgroundColor: Colors.white,
-                title: Text("New news"),
+                title: Text("Update news"),
               )),
           body: Column(
             children: [
@@ -121,8 +122,19 @@ return MultiBlocProvider(
                 ),
                 Expanded(
                   child: TextField(
-                    controller: userIdController,
+                    controller: idController,
                     decoration: InputDecoration(labelText: "id"),
+                  ),
+                ),
+              ]),
+              Row(children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: userIdController,
+                    decoration: InputDecoration(labelText: "user id"),
                   ),
                 ),
               ]),
@@ -132,9 +144,10 @@ return MultiBlocProvider(
                   String title=titleController.text;
                   String body=bodyController.text;
                   String userId=userIdController.text;
-                  newsBloc.add(NewsAddEvent(title: title, body: body, userId: userId));
+                  String id=idController.text;
+                  newsBloc.add(NewsUpdateEvent(title: title, body: body, userId: userId, id: id));
                   final snackBar = SnackBar(
-            content: const Text('News added'),
+            content: const Text('News updated'),
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   Navigator.pop(context);
