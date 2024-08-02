@@ -1,16 +1,16 @@
-# whatsapp_new_design
+# WhatsApp Clone
 
-A new Flutter project.
+This repository contains the source code for a WhatsApp clone, designed to ensure cross-platform compatibility and accessibility. The application has been tested on Windows, macOS, and Linux, providing a seamless user experience across different operating systems.
 
-## Getting Started
+## Key Features
+- Cross-Platform Compatibility: Works on Windows, macOS, and Linux.
+- Accessibility: Thoroughly tested with accessibility tools to ensure usability for individuals with diverse needs.
+- Unique Features: Brainstormed and implemented new features to differentiate from the current WhatsApp functionalities.
 
-This project is a starting point for a Flutter application.
+## Frameworks and Technologies Used
+- Flutter: For building the frontend.
+- Firebase: For backend services.
+- REST API: For communication between frontend and backend.
+- BLoC Management: For efficient state management.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Feel free to explore the code, suggest improvements, and contribute to the project.
